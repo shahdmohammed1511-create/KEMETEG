@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, it } from "node:test";
@@ -99,5 +99,25 @@ describe("project data", () => {
         `Missing hero video poster ${name}-poster.webp`,
       );
     }
+  });
+
+  it("includes social preview metadata and its share image", () => {
+    const html = readFileSync(
+      join(publicDirectory, "..", "index.html"),
+      "utf8",
+    );
+
+    assert.match(
+      html,
+      /<link rel="canonical" href="https:\/\/kemetegconstruction\.vercel\.app\/"/,
+    );
+    assert.match(html, /property="og:image"/);
+    assert.match(html, /name="twitter:image"/);
+    assert.match(html, /property="og:image:width" content="1200"/);
+    assert.match(html, /property="og:image:height" content="630"/);
+    assert.ok(
+      existsSync(join(publicDirectory, "assets", "kemet-share.jpg")),
+      "Missing social sharing image",
+    );
   });
 });

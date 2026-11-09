@@ -45,6 +45,12 @@ form entries and can open a prefilled email as a fallback.
 - `public/assets/` — shared brand images and media
 - `public/assets/Hero/` — hero carousel videos (`5.mp4`, `6.mp4`) and their
   matching poster images; replace these files to update the video slides
+- `public/assets/kemet-share.jpg` — 1200×630 social preview image used by
+  Open Graph and Twitter cards
+
+The canonical and social URLs currently use the deployed Vercel address. After
+connecting `kemeteg-group.com`, update the canonical, Open Graph, and
+structured-data URLs in `index.html` to the custom domain.
 
 Sections without content (case studies, testimonials, certifications, and team)
 are hidden automatically until entries are added in `src/main.js`.

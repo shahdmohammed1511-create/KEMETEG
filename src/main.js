@@ -303,7 +303,7 @@ A.push(
   ...[
     ["FAQ", "الأسئلة الشائعة"],
     ["Team", "الفريق"],
-    ["Back to top ↑", "للأعلى ↑"],
+    ["Back to top", "للأعلى"],
     ["Have a project in mind?", "لديك مشروع في بالك؟"],
     ["Commercial Registration No. 10…", "رقم السجل التجاري 10230 07000 20743"],
     ["Case studies", "دراسات حالة"],
@@ -365,9 +365,22 @@ const DESC = document.querySelector("meta[name=description]"),
   TWITTER_DESCRIPTION = document.querySelector(
     'meta[name="twitter:description"]',
   ),
-  TT = document.title,
-  DD = DESC.content,
-  OG_DD = OG_DESCRIPTION.content;
+  OG_IMAGE_ALT = document.querySelector('meta[property="og:image:alt"]'),
+  TWITTER_IMAGE_ALT = document.querySelector('meta[name="twitter:image:alt"]');
+const SEO = {
+  en: {
+    title: "KEMET EG | Engineering & Construction in Egypt",
+    description:
+      "KEMET EG delivers integrated engineering, design and construction for industrial, administrative and medical projects across Egypt, from concept to handover.",
+    imageAlt: "KEMET EG engineering and construction projects in Egypt",
+  },
+  ar: {
+    title: "كيميت EG | شركة هندسة وإنشاءات في مصر",
+    description:
+      "كيميت EG شركة هندسة وإنشاءات في مصر، تقدم تصميمًا وتنفيذًا متكاملًا للمشروعات الصناعية والإدارية والطبية، من الفكرة حتى التسليم.",
+    imageAlt: "مشروعات كيميت EG في الهندسة والإنشاءات",
+  },
+};
 const T = (s) => {
   if (lang != "ar") return s;
   let e = A.find((x) => x[0] == s);
@@ -775,18 +788,16 @@ function setLang(l) {
     e.dataset.en = s;
     e.textContent = T(s);
   });
-  document.title = l == "ar" ? "كيميت EG | هندسة وإنشاءات" : TT;
-  DESC.content =
-    l == "ar"
-      ? "كيميت EG شركة هندسة وإنشاءات مصرية تنفّذ مشروعات صناعية وإدارية وطبية ودينية بتصميم داخلي متكامل وBIM وMEP وتحكم كامل في التكلفة."
-      : DD;
-  const title = l == "ar" ? "كيميت EG | هندسة وإنشاءات" : TT;
-  const description = l == "ar" ? DESC.content : OG_DD;
-  OG_TITLE.content = title;
-  OG_DESCRIPTION.content = description;
+  const seo = SEO[l];
+  document.title = seo.title;
+  DESC.content = seo.description;
+  OG_TITLE.content = seo.title;
+  OG_DESCRIPTION.content = seo.description;
   OG_LOCALE.content = l == "ar" ? "ar_EG" : "en_US";
-  TWITTER_TITLE.content = title;
-  TWITTER_DESCRIPTION.content = description;
+  TWITTER_TITLE.content = seo.title;
+  TWITTER_DESCRIPTION.content = seo.description;
+  OG_IMAGE_ALT.content = seo.imageAlt;
+  TWITTER_IMAGE_ALT.content = seo.imageAlt;
   $("#lg").textContent = l == "ar" ? "EN" : "عربي";
   drawHero();
   drawManagerContact();
@@ -808,7 +819,7 @@ const th = $("#th"),
   dk = () => (rt.dataset.theme ? rt.dataset.theme == "dark" : mq.matches);
 function setTh(v) {
   if (v) rt.dataset.theme = v;
-  th.textContent = dk() ? "☀" : "☾";
+  th.dataset.mode = dk() ? "dark" : "light";
   th.setAttribute(
     "aria-label",
     dk() ? "Switch to light mode" : "Switch to dark mode",
