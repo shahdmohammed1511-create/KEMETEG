@@ -653,7 +653,10 @@ function close() {
   last && last.focus();
 }
 $("#cl").onclick = close;
-mod.addEventListener("click", close);
+mod.addEventListener("click", (e) => {
+  if (e.target.closest(".nv")) return;
+  close();
+});
 const go = (d) =>
   trk.scrollBy({
     left: d * (trk.children[0].offsetWidth + 12),
